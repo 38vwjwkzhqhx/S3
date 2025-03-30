@@ -1,0 +1,46 @@
+# Description of what this change includes
+# Revision number
+# Date
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template to create a VPC spanning at least three Availability Zones in us-west-2'
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: VPC-HALGAR8059
+
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs us-west-2 ]
+      Tags:
+        - Key: Name
+          Value: SubnetA
+
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs us-west-2 ]
+      Tags:
+        - Key: Name
+          Value: SubnetB
+
+  SubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [ 2, !GetAZs us-west-2 ]
+      Tags:
+        - Key: Name
+          Value: SubnetC
